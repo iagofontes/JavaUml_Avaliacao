@@ -1,5 +1,7 @@
 package br.com.iago.app;
 
+import java.util.ArrayList;
+
 import javax.swing.JOptionPane;
 
 import br.com.iago.controller.TwitterController;
@@ -13,9 +15,12 @@ public class AppMain {
 			+ "4 - Exibir autor do primeiro e último tweet \n"
 			+ "5 - Exibir a data mais recente e a mais antiga \n"
 			+ "6 - Sair \n";
+	public static ArrayList<String> hashtags = new ArrayList<>();
 	
 	public static void main(String[] args) {
+		
 		twitterController = new TwitterController();
+		popularHashtags();
 		
 		while(true) {
 			try {
@@ -49,14 +54,99 @@ public class AppMain {
 		switch(option) {
 			case 1:
 				
-				JOptionPane.showMessageDialog(null, "opcao1", "Oi", JOptionPane.INFORMATION_MESSAGE);
+				apresentarListaStrings(
+						twitterCtrl.buscarQtdeTweets(
+								selecionarHashtag()
+						),
+						"Totalização dos tweets",
+						"Nenhum tweet encontrado para totalização.");
+				break;
+			
+			case 2:
+				
+				apresentarListaStrings(
+						twitterCtrl.buscarQtdeRetweets(
+								selecionarHashtag()
+						),
+						"Totalização dos retweets",
+						"Nenhum retweet encontrado para totalização.");				
+				break;
+				
+			case 3:
+				
+				apresentarListaStrings(
+						twitterCtrl.buscarQtdeFavoritacoes(
+								selecionarHashtag()
+						),
+						"Totalização dos favoritações",
+						"Nenhum favoritação encontrada para totalização.");				
+				break;
+				
+			case 4:
+				
+				apresentarListaStrings(
+						twitterCtrl.buscarPUNome(),
+						"Nomes da timeline",
+						"Nenhum tweet encontrado.");				
+				break;
+				
+			case 5:
+				
+				apresentarListaStrings(
+						twitterCtrl.buscarPUData(),
+						"Datas da timeline",
+						"Nenhum tweet encontrado.");				
 				break;
 				
 			case 6:
 				
 				System.exit(0);
+				break;
+				
+			default:
+				JOptionPane.showMessageDialog(
+						null, 
+						"Opção não encontrada, tente novamente.", 
+						"Opss...", 
+						JOptionPane.INFORMATION_MESSAGE
+				);
+				break;
 				
 		}
 	}
-
+	
+	public static void apresentarListaStrings(ArrayList<String> arr, String jTitle, String eMessage) {
+		//apresenta os nomes de datas dos primeiros e últimos tweets
+		String message = "";
+		if(arr.size() > 0) {
+			for(String descricao : arr) {
+				message += descricao+" \n";
+			}
+		} else {
+			message = eMessage;
+		}
+		JOptionPane.showMessageDialog(null, message, jTitle, JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public static String selecionarHashtag() {
+		return (String) JOptionPane.showInputDialog(
+				null,
+				"Selecione uma das hashtags abaixo:", 
+				"Hashtags", 
+				JOptionPane.QUESTION_MESSAGE,
+				null,
+				hashtags.toArray(),
+				null
+				);
+	}
+	
+	public static void popularHashtags() {
+		hashtags.add("#java");
+		hashtags.add("#jvm");
+		hashtags.add("#javaone");
+		hashtags.add("#openjdk");
+		hashtags.add("#java7");
+		hashtags.add("#java8");
+		hashtags.add("#java9");
+	}
 }

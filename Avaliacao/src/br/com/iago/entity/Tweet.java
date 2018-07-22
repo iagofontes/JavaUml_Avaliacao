@@ -8,7 +8,11 @@ public class Tweet {
 	private Date postagem;
 	private String mensagem;
 	
-	
+	public Tweet(String autor, Date postagem, String mensagem) {
+		this.autor = autor;
+		this.postagem = postagem;
+		this.mensagem = mensagem;
+	}
 	
 	public String getAutor() {
 		return autor;
