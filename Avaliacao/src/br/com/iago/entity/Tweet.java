@@ -7,11 +7,15 @@ public class Tweet {
 	private String autor;
 	private Date postagem;
 	private String mensagem;
-	
-	public Tweet(String autor, Date postagem, String mensagem) {
+	private Integer qtdeFavoritos;
+	private Integer qtdeRetweets;
+
+	public Tweet(String autor, Date postagem, String mensagem, Integer favoritos, Integer retweets) {
 		this.autor = autor;
 		this.postagem = postagem;
 		this.mensagem = mensagem;
+		this.qtdeFavoritos = favoritos;
+		this.qtdeRetweets = retweets;
 	}
 	
 	public String getAutor() {
@@ -31,6 +35,18 @@ public class Tweet {
 	}
 	public void setMensagem(String mensagem) {
 		this.mensagem = mensagem;
+	}
+	public Integer getQtdeFavoritos() {
+		return qtdeFavoritos;
+	}
+	public void setQtdeFavoritos(Integer qtdeFavoritos) {
+		this.qtdeFavoritos = qtdeFavoritos;
+	}
+	public Integer getQtdeRetweets() {
+		return qtdeRetweets;
+	}
+	public void setQtdeRetweets(Integer qtdeRetweets) {
+		this.qtdeRetweets = qtdeRetweets;
 	}
 	public String toString() {
 		return "Autor: "+this.getAutor()+" \n"

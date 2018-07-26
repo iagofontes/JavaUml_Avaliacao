@@ -14,7 +14,8 @@ public class AppMain {
 			+ "3 - Quantidade de favoritações por dia \n"
 			+ "4 - Exibir autor do primeiro e último tweet \n"
 			+ "5 - Exibir a data mais recente e a mais antiga \n"
-			+ "6 - Sair \n";
+			+ "6 - Postar tweet \n"
+			+ "7 - Sair \n";
 	public static ArrayList<String> hashtags = new ArrayList<>();
 	
 	public static void main(String[] args) {
@@ -24,27 +25,37 @@ public class AppMain {
 		
 		while(true) {
 			try {
-				selectMenuOption(twitterController, 
+				
+				selectMenuOption(
+						twitterController, 
 						Integer.parseInt(
 								JOptionPane.showInputDialog(
 										displayOption
-								)
-						)
+								).toString())
 				);
+				
+			} catch (NullPointerException npex) {
+				
+				System.exit(0);
+				
 			} catch (NumberFormatException nfex) {
+				
 				nfex.printStackTrace();
 				JOptionPane.showMessageDialog(
 						null, 
 						"Erro ao verificar opção selecionada.", 
 						"Problemas", 
 						JOptionPane.ERROR_MESSAGE);
+				
 			} catch (Exception e) {
+				
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(
 						null, 
 						"Problemas encontrados, tente novamente.", 
 						"Problemas não reconhecidos", 
 						JOptionPane.ERROR_MESSAGE);
+				
 			}
 		}
 		
@@ -99,6 +110,11 @@ public class AppMain {
 				break;
 				
 			case 6:
+
+				atualizarStatus(twitterCtrl);
+				break;
+				
+			case 7:
 				
 				System.exit(0);
 				break;
@@ -148,5 +164,38 @@ public class AppMain {
 		hashtags.add("#java7");
 		hashtags.add("#java8");
 		hashtags.add("#java9");
+	}
+	
+	public static void atualizarStatus(TwitterController twitterCtrl) {
+		
+		try {
+			
+			JOptionPane.showMessageDialog(
+					null, 
+					twitterCtrl.atualizarStatus(
+						JOptionPane.showInputDialog(
+								null,
+								"Informe o texto para publicação:", 
+								"Texto para status",
+								JOptionPane.QUESTION_MESSAGE,
+								null,
+								null,
+								null
+							).toString()
+					), 
+					"Atualizar Status", 
+					JOptionPane.INFORMATION_MESSAGE);
+			
+		} catch (NullPointerException npe) {
+			
+			npe.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Text inválido.", "Texto para stauts", JOptionPane.ERROR_MESSAGE);
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			
+		}
+		
 	}
 }
