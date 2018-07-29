@@ -96,15 +96,19 @@ public class AppMain {
 			case 4:
 				
 				apresentarListaStrings(
-						twitterCtrl.buscarPUNome(),
-						"Nomes da timeline",
+						twitterCtrl.buscarPUNome(
+							selecionarHashtag()
+						),
+						"Nomes da pesquisa",
 						"Nenhum tweet encontrado.");				
 				break;
 				
 			case 5:
 				
 				apresentarListaStrings(
-						twitterCtrl.buscarPUData(),
+						twitterCtrl.buscarPUData(
+								selecionarHashtag()
+						),
 						"Datas da timeline",
 						"Nenhum tweet encontrado.");				
 				break;

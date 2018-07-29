@@ -2,7 +2,7 @@ package br.com.iago.entity;
 
 import java.util.Date;
 
-public class Tweet {
+public class Tweet implements Comparable<Tweet> {
 	
 	private String autor;
 	private Date postagem;
@@ -52,5 +52,14 @@ public class Tweet {
 		return "Autor: "+this.getAutor()+" \n"
 		+"Postagem: "+this.getPostagem()+" \n"
 		+"Mensagem: "+this.getMensagem();
+	}
+
+	@Override
+	public int compareTo(Tweet tweet) {
+		
+		if(this.getPostagem().before(tweet.getPostagem()))
+			return 1;
+		return 0;
+		
 	}
 }
