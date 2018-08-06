@@ -48,6 +48,8 @@ public class Tweet implements Comparable<Tweet> {
 	public void setQtdeRetweets(Integer qtdeRetweets) {
 		this.qtdeRetweets = qtdeRetweets;
 	}
+	
+	@Override
 	public String toString() {
 		return "Autor: "+this.getAutor()+" \n"
 		+"Postagem: "+this.getPostagem()+" \n"

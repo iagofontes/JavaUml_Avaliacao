@@ -1,12 +1,17 @@
 package br.com.iago.controller;
 
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
+
+import javax.swing.JOptionPane;
 
 import br.com.iago.entity.Authentic;
+import br.com.iago.entity.Report;
 import br.com.iago.entity.Tweet;
 import br.com.iago.utils.Logger;
 import br.com.iago.utils.Util;
@@ -222,8 +227,6 @@ public class TwitterController {
 		if(!(tweets.size() > 0)) {
 			return arr;
 		}
-		
-		Logger.saveLog(1, "teste", new Date());
 
 		Date maior = tweets.get(0).getPostagem();
 		Date menor = tweets.get(0).getPostagem();
@@ -244,6 +247,44 @@ public class TwitterController {
 		
 	}
 	
+	public String gerarRelatorio(String hashtag) {
+		
+		if((hashtag.isEmpty()) || (hashtag == null)) {
+			
+			return "Hashtag não informada, impossível continuar.";
+			
+		}
+		
+		ArrayList<String> arr = new ArrayList<>();
+		
+		ArrayList<String> arrTweets = this.buscarQtdeTweets(hashtag);
+		ArrayList<String> arrRetweets = this.buscarQtdeRetweets(hashtag);
+		ArrayList<String> arrTweetsFavs = this.buscarQtdeFavoritacoes(hashtag);
+		ArrayList<String> arrTweetsPUNome = this.buscarPUNome(hashtag);
+		ArrayList<String> arrTweetsPUData = this.buscarPUData(hashtag);
+		
+		arr.add("Relatório de totalização");
+		arr.add("Hashtag selecionada: "+hashtag);
+		arr.add("================ Quantidade de tweets ================");
+		this.transferirStrings(arrTweets, arr);
+		arr.add("================ Quantidade de retweets ================");
+		this.transferirStrings(arrRetweets, arr);
+		arr.add("================ Quantidade de favoritações ================");
+		this.transferirStrings(arrTweetsFavs, arr);
+		arr.add("================ Primeiro e último nome dos tweets ================");
+		this.transferirStrings(arrTweetsPUNome, arr);
+		arr.add("================ Primeira e última data dos tweets ================");
+		this.transferirStrings(arrTweetsPUData, arr);
+		
+		//selecionar o caminho para salvar o relatório
+
+		Report report = new Report(this.montarNomeRelatorio(), this.selecionarDiretorio());
+		if(report.saveReport(arr)) 
+			return "Relatório gerado com sucesso. \nSalvo em: "+report.getDirectory()+"/"+report.getNome();
+		return "Problemas ao gerar relatório, tente novamente.";
+		
+	}
+	
 	public String atualizarStatus(String texto) {
 		
 		String message = "Problemas ao atualizar status.";
@@ -261,34 +302,10 @@ public class TwitterController {
 		return message;
 	}
 	
-	private ArrayList<Tweet> getTimeLine() {
+	public String postarTotalizacao(String hashtag) {
 		
-		try {
-			
-			List<Status> tweetsPure = this.twitter.getHomeTimeline();
-			ArrayList<Tweet> tweets = new ArrayList<>();
-			for(Status tweet : tweetsPure) {
-				tweets.add(
-						new Tweet(
-								tweet.getUser().getScreenName(), 
-								tweet.getCreatedAt(), 
-								tweet.getText(),
-								tweet.getFavoriteCount(),
-								tweet.getRetweetCount()
-						)
-				);
-			}
-			
-			return tweets;
-				
-		} catch (Exception e) {
-			
-			e.printStackTrace();
-			Logger.saveLog(1, e.getMessage(), new Date());
-		
-		}
-		
-		return new ArrayList<Tweet>();
+		//função para totalizar os resultados e realizar a postagem mencionando o professor.
+		return "";
 		
 	}
 	
@@ -391,7 +408,7 @@ public class TwitterController {
 		
 	}
 
-	private String buscarNomePorDia(Integer dia) {
+	/*private String buscarNomePorDia(Integer dia) {
 		switch(dia) {
 			case 0 : 
 				return "Domingo";
@@ -410,6 +427,50 @@ public class TwitterController {
 			default :
 				return "Não reconhecido";
 		}
+	}*/
+	
+	private void transferirStrings(ArrayList<String> arrRead, ArrayList<String> arrUpdate) {
+		
+		//transfere string de um array para outro
+		arrUpdate.addAll(arrRead);
+		
+	}
+	
+	private String selecionarDiretorio() {
+		
+		String[] array = {"Sim", "Não"};
+		if(JOptionPane.showInputDialog(
+				null,
+				"Gerar relatório em diretório padrão ?", 
+				"Diretório de relatório",
+				JOptionPane.QUESTION_MESSAGE,
+				null,
+				array,
+				null
+			).toString() == "Não"
+		) {
+			
+			//exibir nova janela para informar diretório
+			String directory = JOptionPane.showInputDialog(
+					null,
+					"Informe o diretório para gerar o relatório.",
+					"Informe o diretório",
+					JOptionPane.QUESTION_MESSAGE).toString();
+			if(Files.isDirectory(Paths.get(directory), LinkOption.NOFOLLOW_LINKS)) {
+				
+				return directory;
+				
+			}
+		}
+		
+		return "";
+		
+	}
+	
+	private String montarNomeRelatorio() {
+		
+		return "twitterReport_"+((new Date()).getTime());
+		
 	}
 	
 }

@@ -1,0 +1,31 @@
+Relatório de totalização
+Hashtag selecionada: #openjdk
+================ Quantidade de tweets ================
+Quantidade de tweets por dia
+06/08/2018 = 23
+05/08/2018 = 14
+04/08/2018 = 12
+03/08/2018 = 27
+02/08/2018 = 132
+================ Quantidade de retweets ================
+Quantidade de retweets por dia
+06/08/2018 = 2503
+05/08/2018 = 1284
+04/08/2018 = 493
+03/08/2018 = 1198
+02/08/2018 = 11294
+================ Quantidade de favoritações ================
+Quantidade de favoritações por dia
+06/08/2018 = 3
+05/08/2018 = 1
+04/08/2018 = 2
+03/08/2018 = 12
+02/08/2018 = 140
+================ Primeiro e último nome dos tweets ================
+Primeiro e último nome dos tweets encontrados: 
+Primeiro: karianna
+Último: koenusTweets
+================ Primeira e última data dos tweets ================
+Maiores e menores datas encontradas: 
+Maior data encontrada: 06/08/2018
+Menor data encontrada: 01/08/2018

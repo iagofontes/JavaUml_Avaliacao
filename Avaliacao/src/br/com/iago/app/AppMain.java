@@ -15,11 +15,13 @@ public class AppMain {
 			+ "4 - Exibir autor do primeiro e último tweet \n"
 			+ "5 - Exibir a data mais recente e a mais antiga \n"
 			+ "6 - Postar tweet \n"
-			+ "7 - Sair \n";
+			+ "7 - Relatório de totalização \n"
+			+ "8 - Totalizar e mencionar professor \n"
+			+ "9 - Sair \n";
 	public static ArrayList<String> hashtags = new ArrayList<>();
 	
 	public static void main(String[] args) {
-		
+
 		twitterController = new TwitterController();
 		popularHashtags();
 		
@@ -89,7 +91,7 @@ public class AppMain {
 						twitterCtrl.buscarQtdeFavoritacoes(
 								selecionarHashtag()
 						),
-						"Totalização dos favoritações",
+						"Totalização das favoritações",
 						"Nenhum favoritação encontrada para totalização.");				
 				break;
 				
@@ -120,9 +122,33 @@ public class AppMain {
 				
 			case 7:
 				
-				System.exit(0);
+				JOptionPane.showMessageDialog(
+						null, 
+						twitterCtrl.gerarRelatorio(
+								selecionarHashtag()
+						), 
+						"Relatório de totalização", 
+						JOptionPane.INFORMATION_MESSAGE
+				);
 				break;
 				
+			case 8:
+				
+				JOptionPane.showMessageDialog(
+						null, 
+						twitterCtrl.postarTotalizacao(
+								selecionarHashtag()
+						), 
+						"Postagem de totalização", 
+						JOptionPane.INFORMATION_MESSAGE
+				);
+				break;
+				
+			case 9:
+				
+				System.exit(0);
+				break;
+								
 			default:
 				JOptionPane.showMessageDialog(
 						null, 
