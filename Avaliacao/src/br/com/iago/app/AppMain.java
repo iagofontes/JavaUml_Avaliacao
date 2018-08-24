@@ -197,9 +197,7 @@ public class AppMain {
 	}
 	
 	public static void atualizarStatus(TwitterController twitterCtrl) {
-		
 		try {
-			
 			JOptionPane.showMessageDialog(
 					null, 
 					twitterCtrl.atualizarStatus(
@@ -226,6 +224,5 @@ public class AppMain {
 			e.printStackTrace();
 			
 		}
-		
 	}
 }

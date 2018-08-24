@@ -9,20 +9,15 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 
 public class Logger {
-
 	
 	public static void saveLog( 
 		Integer type, String message, Date date
 	) {
-		
 		try {
-		
 			PrintWriter pw = new PrintWriter(new FileWriter("log.txt"));
 			pw.write(createStringLog(type, message, date));
 			pw.close();
-			
 		} catch (IOException ioEx) {
-			
 			ioEx.printStackTrace();
 			JOptionPane.showMessageDialog(
 					null, 
@@ -30,14 +25,9 @@ public class Logger {
 					"File Error", 
 					JOptionPane.ERROR_MESSAGE
 			);
-			
 		} catch (Exception e) {
-			
 			e.printStackTrace();
-			
 		}
-		
-		
 	}
 	
 	private static String createStringLog(

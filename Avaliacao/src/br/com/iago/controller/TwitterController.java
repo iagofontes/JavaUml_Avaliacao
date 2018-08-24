@@ -43,143 +43,100 @@ public class TwitterController {
 		
 	}
 	
-	public ArrayList<String> buscarQtdeTweets(String hashtag) {
-		
+	public ArrayList<String> buscarQtdeTweets(String hashtag) {		
 		//busca a quantidade de tweets de acordo com uma hashtag específica
 		Date hoje = this.montarDataParaFiltrar();
-
 		ArrayList<Tweet> tweets = this.buscarTweets(
 				Util.formatDateToString(this.buscarUltimaSemana(hoje)), 
 				Util.formatDateToString(hoje), 
 				hashtag
 			);
-
 		ArrayList<String> arr = new ArrayList<>();
-		
 		if(tweets.size() < 1) {
 			return new ArrayList<String>();
 		}
-
 		Collections.sort(tweets);
 		int qt = 0;
 		Date date = tweets.get(0).getPostagem();
 		arr.add("Quantidade de tweets por dia");
-		
 		for(Tweet tweet : tweets) {
-			
 			if(Util.formatDateToString(date).equals(Util.formatDateToString(tweet.getPostagem()))) {
-
 				//se a data do tweet for igual a atual, só incremento.
 				qt++;
-				
 			} else {
-
 				//se a data do tweet não for igual, seto 1 no total 
 				//atualizo a data e adiciono as informações no array
 				arr.add(this.montarDescricaoTotalTweets(date, qt));
 				qt=1;
 				date = tweet.getPostagem();
-
 			}
-
 		}
-		
 		return arr;
-		
 	}
-	
+
 	public ArrayList<String> buscarQtdeRetweets(String hashtag) {
-		
 		//busca a quantidade de retweets de acordo com uma hashtag específica
 		Date hoje = this.montarDataParaFiltrar();
-
 		ArrayList<Tweet> tweets = this.buscarTweets(
 				Util.formatDateToString(this.buscarUltimaSemana(hoje)), 
 				Util.formatDateToString(hoje), 
 				hashtag
 			);
-
 		ArrayList<String> arr = new ArrayList<>();
-
 		if(tweets.size() < 1) {
 			return arr;
 		}
-		
 		Collections.sort(tweets);
 		int qt = 0;
 		Date date = tweets.get(0).getPostagem();
 		arr.add("Quantidade de retweets por dia");
-		
 		for(Tweet tweet : tweets) {
-			
 			if(Util.formatDateToString(date).equals(Util.formatDateToString(tweet.getPostagem()))) {
-
 				//se a data do tweet for igual a atual, só incremento.
 				qt += tweet.getQtdeRetweets();
-				
 			} else {
-
 				//se a data do tweet não for igual, seto 1 no total 
 				//atualizo a data e adiciono as informações no array
 				arr.add(this.montarDescricaoTotalTweets(date, qt));
 				qt = tweet.getQtdeRetweets();
 				date = tweet.getPostagem();
-
 			}
-
 		}
-		
 		return arr;
-		
 	}
-	
+
 	public ArrayList<String> buscarQtdeFavoritacoes(String hashtag) {
-		
 		//busca a quantidade de favoritações de acordo com uma hashtag específica
 		Date hoje = this.montarDataParaFiltrar();
-
 		ArrayList<String> arr = new ArrayList<>();
-		
 		ArrayList<Tweet> tweets = this.buscarTweets(
 				Util.formatDateToString(this.buscarUltimaSemana(hoje)), 
 				Util.formatDateToString(hoje), 
 				hashtag
 			);
-		
 		if(tweets.size() < 1) {
 			return arr;
 		}
-		
 		Collections.sort(tweets);
 		int qt = 0;
 		Date date = tweets.get(0).getPostagem();
 		arr.add("Quantidade de favoritações por dia");
-		
 		for(Tweet tweet : tweets) {
-			
 			if(Util.formatDateToString(date).equals(Util.formatDateToString(tweet.getPostagem()))) {
-
 				//se a data do tweet for igual a atual, só incremento.
 				qt += tweet.getQtdeFavoritos();
-				
 			} else {
-
 				//se a data do tweet não for igual, seto 1 no total 
 				//atualizo a data e adiciono as informações no array
 				arr.add(this.montarDescricaoTotalTweets(date, qt));
 				qt = tweet.getQtdeFavoritos();
 				date = tweet.getPostagem();
-
 			}
-
 		}
-
 		return arr;
-		
 	}
 	
 	public ArrayList<String> buscarPUNome(String hashtag) {
-		
 		//busca o primeiro e último nome dos usuários dos tweets selecionados
 		Date hoje = this.montarDataParaFiltrar();
 
@@ -208,29 +165,22 @@ public class TwitterController {
 		}
 
 		return arr;
-		
 	}
 	
 	public ArrayList<String> buscarPUData(String hashtag) {
-		
 		//busca a quantidade de favoritações de acordo com uma hashtag específica
 		Date hoje = this.montarDataParaFiltrar();
-		
 		ArrayList<String> arr = new ArrayList<>();
-		
 		ArrayList<Tweet> tweets = this.buscarTweets(
 				Util.formatDateToString(this.buscarUltimaSemana(hoje)), 
 				Util.formatDateToString(hoje), 
 				hashtag
 			);
-		
+		Date maior = tweets.get(0).getPostagem();
+		Date menor = tweets.get(0).getPostagem();
 		if(!(tweets.size() > 0)) {
 			return arr;
 		}
-
-		Date maior = tweets.get(0).getPostagem();
-		Date menor = tweets.get(0).getPostagem();
-		
 		for(Tweet tweet : tweets) {
 			if(tweet.getPostagem().after(maior)) {
 				maior = tweet.getPostagem();
@@ -239,24 +189,18 @@ public class TwitterController {
 				menor = tweet.getPostagem();
 			}
 		}
-		
 		arr.add("Maiores e menores datas encontradas: ");
 		arr.add("Maior data encontrada: "+Util.formatDateToBr(maior));
 		arr.add("Menor data encontrada: "+Util.formatDateToBr(menor));
 		return arr;
-		
 	}
 	
 	public String gerarRelatorio(String hashtag) {
-		
 		if((hashtag.isEmpty()) || (hashtag == null)) {
-			
 			return "Hashtag não informada, impossível continuar.";
-			
 		}
 		
 		ArrayList<String> arr = new ArrayList<>();
-		
 		ArrayList<String> arrTweets = this.buscarQtdeTweets(hashtag);
 		ArrayList<String> arrRetweets = this.buscarQtdeRetweets(hashtag);
 		ArrayList<String> arrTweetsFavs = this.buscarQtdeFavoritacoes(hashtag);
@@ -277,12 +221,10 @@ public class TwitterController {
 		this.transferirStrings(arrTweetsPUData, arr);
 		
 		//selecionar o caminho para salvar o relatório
-
 		Report report = new Report(this.montarNomeRelatorio(), this.selecionarDiretorio());
 		if(report.saveReport(arr)) 
 			return "Relatório gerado com sucesso. \nSalvo em: "+report.getDirectory()+"/"+report.getNome();
 		return "Problemas ao gerar relatório, tente novamente.";
-		
 	}
 	
 	public String atualizarStatus(String texto) {
@@ -303,10 +245,51 @@ public class TwitterController {
 	}
 	
 	public String postarTotalizacao(String hashtag) {
-		
 		//função para totalizar os resultados e realizar a postagem mencionando o professor.
-		return "";
-		
+		Boolean err = false;
+		ArrayList<String> arrTweets = this.buscarQtdeTweets(hashtag);
+		ArrayList<String> arrRetweets = this.buscarQtdeRetweets(hashtag);
+		ArrayList<String> arrTweetsFavs = this.buscarQtdeFavoritacoes(hashtag);
+		ArrayList<String> arrTweetsPUNome = this.buscarPUNome(hashtag);
+		ArrayList<String> arrTweetsPUData = this.buscarPUData(hashtag);
+		String message = "";
+		for(int i = 1; i <= 5; i++) {
+			message = "Olá @michelpf.\n"
+					+ "Hashtag selecionada: "+hashtag+"\n";
+			switch(i) {
+				case 1 :
+					message += this.transferirArrayParaVariavel(arrTweets);
+					break;
+				case 2 :
+					message += this.transferirArrayParaVariavel(arrRetweets);
+					break;
+				case 3 :
+					message += this.transferirArrayParaVariavel(arrTweetsFavs);
+					break;
+				case 4 :
+					message += this.transferirArrayParaVariavel(arrTweetsPUNome);
+					break;
+				case 5 :
+					message += this.transferirArrayParaVariavel(arrTweetsPUData);
+					break;
+				default :
+					break;
+			}
+			if(message.length() < 280) {
+				if(!this.postarTweet(message)) {
+					i--;
+				}
+			} else {
+				err = true;
+				break;
+			}
+		}
+		if(err) {
+			message = "Problemas ao postar totalização.";
+		} else {
+			message = "Totalização postada com sucesso.";
+		}
+		return message;
 	}
 	
 	private Boolean postarTweet(String texto) {
@@ -331,14 +314,11 @@ public class TwitterController {
 	}
 	
 	private ArrayList<Tweet> buscarTweets(String inicio, String fim, String hashtag) {
-		
 		//buscar os tweets de acordo com as datas e  
 		//as hashtags informadas
 		ArrayList<Tweet> tweets = new ArrayList<>();
 		Query twitterQuery = new Query();
-		
 		try {
-		
 			if(!hashtag.isEmpty()) {			
 				twitterQuery.setQuery(hashtag);
 			}
@@ -348,15 +328,10 @@ public class TwitterController {
 			if(!fim.isEmpty()) {
 				twitterQuery.setUntil(fim);
 			}
-			
 			QueryResult qResult = this.twitter.search(twitterQuery);
-			
 			while(qResult.hasNext()) {
-				
 				twitterQuery = qResult.nextQuery();
-				
 				for(Status tweet : qResult.getTweets()) {
-					
 					tweets.add(
 							new Tweet(
 									tweet.getUser().getScreenName(), 
@@ -366,21 +341,14 @@ public class TwitterController {
 									tweet.getRetweetCount()
 							)
 					);
-					
 				}
-				
 				qResult = this.twitter.search(twitterQuery);
-				
 			}
-
 		} catch (Exception e) {
-			
 			e.printStackTrace();
 			Logger.saveLog(1, e.getMessage(), new Date());
 		}
-		
 		return tweets;
-		
 	}
 	
 	private String montarDescricaoTotalTweets(Date date, Integer total) {
@@ -407,37 +375,13 @@ public class TwitterController {
 		return cal.getTime();
 		
 	}
-
-	/*private String buscarNomePorDia(Integer dia) {
-		switch(dia) {
-			case 0 : 
-				return "Domingo";
-			case 1 : 
-				return "Segunda-Feira";
-			case 2 :
-				return "Terça-Feira";
-			case 3 :
-				return "Quarta-Feira";
-			case 4 :
-				return "Quinta-Feira";
-			case 5 :
-				return "Sexta-Feira";
-			case 6 :
-				return "Sábado";
-			default :
-				return "Não reconhecido";
-		}
-	}*/
 	
 	private void transferirStrings(ArrayList<String> arrRead, ArrayList<String> arrUpdate) {
-		
 		//transfere string de um array para outro
 		arrUpdate.addAll(arrRead);
-		
 	}
 	
 	private String selecionarDiretorio() {
-		
 		String[] array = {"Sim", "Não"};
 		if(JOptionPane.showInputDialog(
 				null,
@@ -457,19 +401,29 @@ public class TwitterController {
 					"Informe o diretório",
 					JOptionPane.QUESTION_MESSAGE).toString();
 			if(Files.isDirectory(Paths.get(directory), LinkOption.NOFOLLOW_LINKS)) {
-				
 				return directory;
-				
 			}
 		}
-		
 		return "";
-		
 	}
 	
 	private String montarNomeRelatorio() {
 		
 		return "twitterReport_"+((new Date()).getTime());
+		
+	}
+	
+	private String transferirArrayParaVariavel(ArrayList<String> arr) {
+		
+		String message = "";
+		
+		for(String item : arr) {
+			
+			message += item+"\n";
+			
+		}
+		
+		return message;
 		
 	}
 	

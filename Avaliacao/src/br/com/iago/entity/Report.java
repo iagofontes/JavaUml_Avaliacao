@@ -22,32 +22,23 @@ public class Report {
 	private String directory;
 	
 	public Report(String nome, String directory) {
-		
 		this.nome = nome;
 		this.directory = directory;
-		
 	}
 	
 	public Boolean saveReport(ArrayList<String> messages) {
-		
 		if(this.directory.isEmpty()) {
-			
 			this.directory = this.getProjectPath();
-			
 		}
 		
 		if(this.checkDirectory(this.directory)) {
-			
 			try {
-				
 				File f = new File(this.directory+"/"+this.nome+".txt");
 				PrintWriter pw = new PrintWriter(new FileWriter(f));
 				pw.write(this.createReportByArray(messages));
 				pw.close();
 				return true;
-				
 			} catch (IOException ioEx) {
-				
 				ioEx.printStackTrace();
 				Logger.saveLog(1, ioEx.getMessage(), new Date());
 				JOptionPane.showMessageDialog(
@@ -56,32 +47,21 @@ public class Report {
 					"Problemas", 
 					JOptionPane.ERROR_MESSAGE
 				);
-				
 			} catch (Exception ex) {
-				
 				ex.printStackTrace();
 				Logger.saveLog(1, ex.getMessage(), new Date());
-				
 			}
 		}
-
 		return false;
-
 	}
-	
-	public Boolean checkDirectory(String directory) {
 
+	public Boolean checkDirectory(String directory) {
 		try {
-		
 			Path path = Paths.get(directory);
-			if(Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
-				
+			if(Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {	
 				return true;
-				
 			}
-			
 		} catch (SecurityException secEx) {
-			
 			secEx.printStackTrace();
 			Logger.saveLog(1, secEx.getMessage(), new Date());
 			JOptionPane.showMessageDialog(
@@ -89,9 +69,7 @@ public class Report {
 					"Permissão negada ao acessar diretório.", 
 					"Permissão negada", 
 					JOptionPane.ERROR_MESSAGE);
-			
 		} catch (InvalidPathException inPaEx) {
-
 			inPaEx.printStackTrace();
 			Logger.saveLog(1, inPaEx.getMessage(), new Date());
 			JOptionPane.showMessageDialog(
@@ -99,16 +77,11 @@ public class Report {
 					"Problemas ao localizar diretório informado.", 
 					"Diretório não localizado.", 
 					JOptionPane.ERROR_MESSAGE);
-			
 		} catch (Exception ex) {
-			
 			ex.printStackTrace();
 			Logger.saveLog(1, ex.getMessage(), new Date());
-			
 		}
-		
 		return false;
-
 	}
 	
 	private String createReportByArray(ArrayList<String> arrStrings) {
